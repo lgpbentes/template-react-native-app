@@ -1,4 +1,4 @@
-package com.cloc;
+package com.templatereactnativeapp;
 
 import android.os.Bundle;
 

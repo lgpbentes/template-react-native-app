@@ -1,9 +1,9 @@
 {
-  "name": "Cloc",
-  "displayName": "Cloc",
+  "name": "templatereactnativeapp",
+  "displayName": "templatereactnativeapp",
   "expo": {
-    "name": "Cloc",
-    "slug": "Cloc",
+    "name": "templatereactnativeapp",
+    "slug": "templatereactnativeapp",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"

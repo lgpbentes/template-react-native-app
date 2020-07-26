@@ -1,4 +1,4 @@
-package com.cloc.generated;
+package com.templatereactnativeapp.generated;
 
 import java.util.Arrays;
 import java.util.List;
