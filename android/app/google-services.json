@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1014058830263",
+    "firebase_url": "https://template-react-native-app.firebaseio.com",
+    "project_id": "template-react-native-app",
+    "storage_bucket": "template-react-native-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014058830263:android:9501c38ef9670faa220032",
+        "android_client_info": {
+          "package_name": "com.templatereactnativeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1014058830263-id0vb4o14721j06j7k11pqha7qg40id6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.templatereactnativeapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1014058830263-vui9fcvndml0tnuaos0e4ihvjcqpaiiq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj_xgZXpDe1owsUP-OdZVXRgNf9PCiTNU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1014058830263-vui9fcvndml0tnuaos0e4ihvjcqpaiiq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
