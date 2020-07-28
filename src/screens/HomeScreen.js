@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation }) => (
     <Header>Template React Native App</Header>
 
     <Paragraph>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     </Paragraph>
     <Button mode="contained" onPress={() => navigation.navigate('LoginScreen')}>
       Login
@@ -21,6 +21,11 @@ const HomeScreen = ({ navigation }) => (
       onPress={() => navigation.navigate('RegisterScreen')}
     >
       Cadastro
+    </Button>
+    <Button
+      mode="outlined"
+      onPress={() => { navigation.navigate('SurveyScreen') }}>
+      Questionário
     </Button>
   </Background>
   // add footer
