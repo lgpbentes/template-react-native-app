@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
-import { StyleSheet } from 'react-native';
-import { Button as PaperButton } from 'react-native-paper';
+import { StyleSheet, Text } from 'react-native';
+import { Button as PaperButton, ActivityIndicator, Colors } from 'react-native-paper';
 import { theme } from '../core/theme';
 
-const Button = ({ mode, style, children, ...props }) => (
+const Button = ({ mode, isLoading, style, children, ...props }) => (
   <PaperButton
     style={[
       styles.button,
@@ -12,6 +12,7 @@ const Button = ({ mode, style, children, ...props }) => (
     ]}
     labelStyle={styles.text}
     mode={mode}
+    loading={isLoading}
     {...props}
   >
     {children}

@@ -1,5 +1,7 @@
 import React, { memo, useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import auth from '@react-native-firebase/auth';
+
 import Background from '../components/Background';
 import Logo from '../components/Logo';
 import Header from '../components/Header';
@@ -12,8 +14,39 @@ import { emailValidator, passwordValidator } from '../core/utils';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const _onLoginPressed = () => {
+  const _doCreateUser = async (email, password) => {
+    let success;
+
+    try {
+      setIsLoading(true);
+      let response = await auth().createUserWithEmailAndPassword(email, password);
+      if (response) {
+        success = true;
+      }
+    } catch (error) {
+      success = false;
+      if (error.code === 'auth/email-already-in-use') {
+        setEmail({ ...email, error: 'O endereço de e-mail já está em uso' });
+      }
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+        setEmail({ ...email, error: 'O endereço de email é inválido' });
+      }
+
+      if (error.code === 'auth/weak-password') {
+        setPassword({ ...password, error: 'Senha inválida. A senha deve conter pelo menos 6 caracteres' });
+      }
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+
+    return { success }
+  }
+
+  const _onLoginPressed = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
 
@@ -23,7 +56,11 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
 
-    navigation.navigate('Dashboard');
+    const successLogin = await _doCreateUser(email.value, password.value);
+
+    if (successLogin.success) {
+      navigation.navigate('Dashboard');
+    }
   };
 
   // TODO: add formik
@@ -36,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
       <Header>Login</Header>
 
       <TextInput
-        label="Email"
+        label="E-mail"
         returnKeyType="next"
         value={email.value}
         onChangeText={text => setEmail({ value: text, error: '' })}
@@ -49,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
       />
 
       <TextInput
-        label="Password"
+        label="Senha"
         returnKeyType="done"
         value={password.value}
         onChangeText={text => setPassword({ value: text, error: '' })}
@@ -60,13 +97,13 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.forgotPassword}>
         <TouchableOpacity
-          // onPress={() => navigation.navigate('ForgotPasswordScreen')}
+        // onPress={() => navigation.navigate('ForgotPasswordScreen')}
         >
           <Text style={styles.label}>Esqueci minha senha</Text>
         </TouchableOpacity>
       </View>
 
-      <Button mode="contained" onPress={_onLoginPressed}>
+      <Button mode="contained" onPress={_onLoginPressed} isLoading={isLoading}>
         Login
       </Button>
 
