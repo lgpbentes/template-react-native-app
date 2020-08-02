@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import {
   HomeScreen,
   LoginScreen,
-  // RegisterScreen,
+  RegisterScreen,
   // ForgotPasswordScreen,
   Dashboard,
   SurveyScreen,
@@ -14,7 +14,7 @@ const Router = createStackNavigator(
   {
     HomeScreen,
     LoginScreen,
-    // RegisterScreen,
+    RegisterScreen,
     // ForgotPasswordScreen,
     Dashboard,
     SurveyScreen,

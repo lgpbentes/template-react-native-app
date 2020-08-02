@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import Background from '../components/Background';
@@ -9,26 +9,48 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import { theme } from '../core/theme';
-import { emailValidator, passwordValidator } from '../core/utils';
+import {
+  emailValidator,
+  passwordValidator,
+  nameValidator,
+} from '../core/utils';
 
-const LoginScreen = ({ navigation }) => {
+
+const RegisterScreen = ({ navigation }) => {
+  const [name, setName] = useState({ value: '', error: '' });
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [isLoading, setIsLoading] = useState(false);
 
-  const _doSignIn = async (email, password) => {
+  const _doCreateUser = async (email, password, name) => {
     let success;
 
     try {
       setIsLoading(true);
-      let response = await auth().signInWithEmailAndPassword(email, password);
+      let response = await auth().createUserWithEmailAndPassword(email, password);
+      if (response && auth().currentUser) {
+        const newUserInfo = {
+          displayName: name,
+        }
 
-      if (response && response.user) {
+        await auth().currentUser.updateProfile(newUserInfo);        
+
         success = true;
       }
     } catch (error) {
       success = false;
 
+      if (error.code === 'auth/email-already-in-use') {
+        setEmail({ ...email, error: 'O endereço de e-mail já está em uso' });
+      }
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+        setEmail({ ...email, error: 'O endereço de email é inválido' });
+      }
+
+      if (error.code === 'auth/weak-password') {
+        setPassword({ ...password, error: 'Senha inválida. A senha deve conter pelo menos 6 caracteres' });
+      }
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -37,31 +59,42 @@ const LoginScreen = ({ navigation }) => {
     return { success }
   }
 
-  const _onLoginPressed = async () => {
+
+  const _onSignUpPressed = async () => {
+    const nameError = nameValidator(name.value);
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
 
-    if (emailError || passwordError) {
+    if (emailError || passwordError || nameError) {
+      setName({ ...name, error: nameError });
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
       return;
     }
 
-    const successLogin = await _doSignIn(email.value, password.value);
+    const successLogin = await _doCreateUser(email.value, password.value, name.value);
 
     if (successLogin.success) {
       navigation.navigate('Dashboard');
     }
   };
 
-  // TODO: add formik
   return (
     <Background>
       <BackButton goBack={() => navigation.navigate('HomeScreen')} />
 
       <Logo />
 
-      <Header>Login</Header>
+      <Header>Criar conta</Header>
+
+      <TextInput
+        label="Nome"
+        returnKeyType="next"
+        value={name.value}
+        onChangeText={text => setName({ value: text, error: '' })}
+        error={!!name.error}
+        errorText={name.error}
+      />
 
       <TextInput
         label="E-mail"
@@ -86,22 +119,14 @@ const LoginScreen = ({ navigation }) => {
         secureTextEntry
       />
 
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-        // onPress={() => navigation.navigate('ForgotPasswordScreen')}
-        >
-          <Text style={styles.label}>Esqueci minha senha</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Button mode="contained" onPress={_onLoginPressed} isLoading={isLoading}>
-        Login
+      <Button mode="contained" onPress={_onSignUpPressed} style={styles.button} isLoading={isLoading}>
+        Cadastrar
       </Button>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Não tem uma conta? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
-          <Text style={styles.link}>Cadastro</Text>
+        <Text style={styles.label}>Já tem uma conta? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+          <Text style={styles.link}>Entrar</Text>
         </TouchableOpacity>
       </View>
     </Background>
@@ -109,17 +134,15 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  forgotPassword: {
-    width: '100%',
-    alignItems: 'flex-end',
-    marginBottom: 24,
+  label: {
+    color: theme.colors.secondary,
+  },
+  button: {
+    marginTop: 24,
   },
   row: {
     flexDirection: 'row',
     marginTop: 4,
-  },
-  label: {
-    color: theme.colors.secondary,
   },
   link: {
     fontWeight: 'bold',
@@ -127,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(LoginScreen);
+export default memo(RegisterScreen);
