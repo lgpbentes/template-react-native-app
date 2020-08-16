@@ -1,7 +1,8 @@
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import {
+  AuthLoadingScreen,
   HomeScreen,
   LoginScreen,
   RegisterScreen,
@@ -10,19 +11,27 @@ import {
   SurveyScreen,
 } from './screens';
 
-const Router = createStackNavigator(
-  {
-    HomeScreen,
-    LoginScreen,
-    RegisterScreen,
-    // ForgotPasswordScreen,
-    Dashboard,
-    SurveyScreen,
-  },
-  {
-    initialRouteName: 'HomeScreen',
-    headerMode: 'none',
-  }
-);
+const AppStack = createStackNavigator({
+  Dashboard,
+  SurveyScreen,
+});
 
-export default createAppContainer(Router);
+const AuthStack = createStackNavigator({
+  HomeScreen,
+  LoginScreen,
+  RegisterScreen,
+  // ForgotPasswordScreen,
+});
+
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthLoading: AuthLoadingScreen,
+      App: AppStack,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'AuthLoading',
+    }
+  )
+);

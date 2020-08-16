@@ -19,6 +19,7 @@ const Dashboard = ({ navigation }) => (
         auth()
           .signOut()
           .then(() => console.log('User signed out!'));
+        navigation.navigate('HomeScreen');
       }}>
       Sair
           </Button>
