@@ -11,10 +11,19 @@ import {
   SurveyScreen,
 } from './screens';
 
-const AppStack = createStackNavigator({
-  Dashboard,
-  SurveyScreen,
-});
+const AppStack = createStackNavigator(
+  {
+    Dashboard: {
+      screen: Dashboard,
+    },
+    SurveyScreen: {
+      screen: SurveyScreen,
+    },
+  },
+  {
+    headerMode: 'none',
+  }
+);
 
 const AuthStack = createStackNavigator(
   {
@@ -28,7 +37,7 @@ const AuthStack = createStackNavigator(
       screen: RegisterScreen,
     },
     ForgotPasswordScreen: {
-      screen: ForgotPasswordScreen
+      screen: ForgotPasswordScreen,
     },
   },
   {

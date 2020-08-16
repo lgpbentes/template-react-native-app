@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import Background from '../components/Background';
@@ -51,6 +51,9 @@ const LoginScreen = ({ navigation }) => {
 
     if (successLogin.success) {
       navigation.navigate('Dashboard');
+    } else {
+      // TODO: check for error messages
+      Alert.alert('Algo deu errado!', 'Não foi possível fazer login.')
     }
   };
 
