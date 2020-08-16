@@ -6,7 +6,7 @@ import {
   HomeScreen,
   LoginScreen,
   RegisterScreen,
-  // ForgotPasswordScreen,
+  ForgotPasswordScreen,
   Dashboard,
   SurveyScreen,
 } from './screens';
@@ -16,12 +16,25 @@ const AppStack = createStackNavigator({
   SurveyScreen,
 });
 
-const AuthStack = createStackNavigator({
-  HomeScreen,
-  LoginScreen,
-  RegisterScreen,
-  // ForgotPasswordScreen,
-});
+const AuthStack = createStackNavigator(
+  {
+    HomeScreen: {
+      screen: HomeScreen,
+    },
+    LoginScreen: {
+      screen: LoginScreen,
+    },
+    RegisterScreen: {
+      screen: RegisterScreen,
+    },
+    ForgotPasswordScreen: {
+      screen: ForgotPasswordScreen
+    },
+  },
+  {
+    headerMode: 'none',
+  }
+);
 
 export default createAppContainer(
   createSwitchNavigator(
